@@ -20,4 +20,9 @@ public class ShakespeareTest
     @Test public void test_letterScore_j() { assertEquals(8, letterScore('j')); }
 
     @Test public void test_letterScore_z() { assertEquals(10, letterScore('z')); }
+
+    @Test public void test_wordScore_meander()
+    {
+        assertEquals(10, wordScore("meander"));
+    }
 }
