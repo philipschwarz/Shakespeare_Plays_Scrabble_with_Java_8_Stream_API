@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.util.Arrays;
 import java.util.function.IntUnaryOperator;
 
 import static org.junit.Assert.assertEquals;
@@ -30,4 +31,11 @@ public class ShakespeareTest
     @Test public void test_wordScore_pejorative() { assertEquals(22, wordScore("pejorative")); }
 
     @Test public void test_wordScore_quotient() { assertEquals(17, wordScore("quotient")); }
+
+    @Test public void test_words_with_best_scores()
+    {
+        assertEquals(
+            Arrays.asList("pejorative", "quotient", "meander"),
+            highestScoringWordsIn(Arrays.asList("alas", "pejorative", "to", "be", "or", "quotient", "not", "meander")));
+    }
 }
