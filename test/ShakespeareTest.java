@@ -1,5 +1,7 @@
 import org.junit.Test;
 
+import java.util.function.IntUnaryOperator;
+
 import static org.junit.Assert.assertEquals;
 
 public class ShakespeareTest
@@ -10,16 +12,18 @@ public class ShakespeareTest
            1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10
     };
 
-    private int letterScore(char letter)
+    private IntUnaryOperator letterScore = letter -> letterScores[letter - 'a'];
+
+    private int wordScore(String word)
     {
-        return letterScores[letter - 'a'];
+        return word.chars().map(letterScore).sum();
     }
 
-    @Test public void test_letterScore_a() { assertEquals(1, letterScore('a')); }
+    @Test public void test_letterScore_a() { assertEquals(1, letterScore.applyAsInt('a')); }
 
-    @Test public void test_letterScore_j() { assertEquals(8, letterScore('j')); }
+    @Test public void test_letterScore_j() { assertEquals(8, letterScore.applyAsInt('j')); }
 
-    @Test public void test_letterScore_z() { assertEquals(10, letterScore('z')); }
+    @Test public void test_letterScore_z() { assertEquals(10, letterScore.applyAsInt('z')); }
 
     @Test public void test_wordScore_meander()
     {
