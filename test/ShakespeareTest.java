@@ -25,7 +25,9 @@ public class ShakespeareTest
 
     private List<String> highestScoringWordsIn(List<String> words)
     {
-        return Arrays.asList("pejorative", "quotient", "meander");
+        return Arrays.asList("pejorative", "quotient", "meander")
+                .stream()
+                .collect(toList());
     }
 
     @Test public void test_letterScore_a() { assertEquals(1, letterScore.applyAsInt('a')); }
