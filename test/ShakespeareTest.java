@@ -18,6 +18,6 @@ public class ShakespeareTest
     @Test
     public void test_letterScore_a()
     {
-        assertEquals(2, letterScore('a'));
+        assertEquals(1, letterScore('a'));
     }
 }
