@@ -15,9 +15,5 @@ public class ShakespeareTest
         return letterScores[letter - 'a'];
     }
 
-    @Test
-    public void test_letterScore_a()
-    {
-        assertEquals(1, letterScore('a'));
-    }
+    @Test public void test_letterScore_a() { assertEquals(1, letterScore('a')); }
 }
