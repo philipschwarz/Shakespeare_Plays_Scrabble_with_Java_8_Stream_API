@@ -1,8 +1,11 @@
 import org.junit.Test;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.function.IntUnaryOperator;
+import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.*;
 import static org.junit.Assert.assertEquals;
 
 public class ShakespeareTest
@@ -18,6 +21,11 @@ public class ShakespeareTest
     private int wordScore(String word)
     {
         return word.chars().map(letterScore).sum();
+    }
+
+    private List<String> highestScoringWordsIn(List<String> words)
+    {
+        return Arrays.asList("pejorative", "quotient", "meander");
     }
 
     @Test public void test_letterScore_a() { assertEquals(1, letterScore.applyAsInt('a')); }
