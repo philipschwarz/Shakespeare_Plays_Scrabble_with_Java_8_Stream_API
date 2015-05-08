@@ -25,8 +25,5 @@ public class ShakespeareTest
 
     @Test public void test_letterScore_z() { assertEquals(10, letterScore.applyAsInt('z')); }
 
-    @Test public void test_wordScore_meander()
-    {
-        assertEquals(10, wordScore("meander"));
-    }
+    @Test public void test_wordScore_meander() { assertEquals(10, wordScore("meander")); }
 }
