@@ -9,8 +9,10 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 import static java.util.Arrays.*;
+import static java.util.function.Function.*;
 import static org.junit.Assert.assertEquals;
 import static java.util.stream.Collectors.*;
+import static org.junit.Assert.assertSame;
 
 public class ShakespeareTest
 {
@@ -50,6 +52,8 @@ public class ShakespeareTest
             .collect(toList());
     }
 
+    private int intFor(Character ch){ return ch - 'a'; }
+
     @Test public void test_letterScore_a() { assertEquals(1, letterScore.applyAsInt('a')); }
 
     @Test public void test_letterScore_j() { assertEquals(8, letterScore.applyAsInt('j')); }
@@ -67,5 +71,15 @@ public class ShakespeareTest
         assertEquals(
             asList("pejorative", "quotient", "meander"),
             highestScoringWordsIn(asList("alas", "pejorative", "to", "be", "or", "quotient", "not", "meander")));
+    }
+
+    @Test public void test_histogram_of_letter_count_in_word()
+    {
+        Map<Integer,Integer> histogram = new HashMap();
+        histogram.put((int)'t',1);
+        histogram.put((int)'r',1);
+        histogram.put((int)'a',3);
+        histogram.put((int)'l',2);
+        assertEquals(histogram, letterCountHistogramFor("tralala"));
     }
 }
