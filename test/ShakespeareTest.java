@@ -52,6 +52,17 @@ public class ShakespeareTest
             .collect(toList());
     }
 
+    private Collector<Integer, ?, Map<Integer, Long>> intoMapFromLetterToNumberOfOccurrences =
+        groupingBy(identity(), counting());
+
+    private Map<Integer,Long> letterCountHistogramFor(String word)
+    {
+        return word
+            .chars()
+            .boxed()
+            .collect(intoMapFromLetterToNumberOfOccurrences);
+    }
+
     private int intFor(Character ch){ return ch - 'a'; }
 
     @Test public void test_letterScore_a() { assertEquals(1, letterScore.applyAsInt('a')); }
@@ -75,11 +86,11 @@ public class ShakespeareTest
 
     @Test public void test_histogram_of_letter_count_in_word()
     {
-        Map<Integer,Integer> histogram = new HashMap();
-        histogram.put((int)'t',1);
-        histogram.put((int)'r',1);
-        histogram.put((int)'a',3);
-        histogram.put((int)'l',2);
+        Map<Integer,Long> histogram = new HashMap();
+        histogram.put((int)'t',1L);
+        histogram.put((int)'r',1L);
+        histogram.put((int)'a',3L);
+        histogram.put((int)'l',2L);
         assertEquals(histogram, letterCountHistogramFor("tralala"));
     }
 }
