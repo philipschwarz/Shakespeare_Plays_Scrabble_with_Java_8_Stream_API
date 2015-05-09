@@ -39,7 +39,7 @@ public class ShakespeareTest
 
     private List<String> highestScoringWordsIn(List<String> words)
     {
-        return asList("pejorative", "quotient", "meander")
+        return words
             .stream()
             .collect(intoDescendingMapFromScoreToWordsWithScore)
             .entrySet()
