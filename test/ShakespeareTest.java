@@ -3,6 +3,7 @@ import org.junit.Test;
 import java.util.*;
 import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
+import java.util.function.Predicate;
 import java.util.function.Supplier;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -10,9 +11,8 @@ import java.util.stream.Stream;
 
 import static java.util.Arrays.*;
 import static java.util.function.Function.*;
-import static org.junit.Assert.assertEquals;
 import static java.util.stream.Collectors.*;
-import static org.junit.Assert.assertSame;
+import static org.junit.Assert.*;
 
 public class ShakespeareTest
 {
@@ -20,6 +20,12 @@ public class ShakespeareTest
     {
         // a, b, c, d, e, f, g, h, i, j, k, l, m, n, o, p, q,  r, s, t, u, v, w, x, y, z 
            1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10
+    };
+
+    private static final int [] scrabbleAvailableLetters =
+    {
+        // a, b, c, d,  e, f, g, h, i, j, k, l, m, n, o, p, q, r, s, t, u, v, w, x, y, z   
+           9, 2, 2, 1, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1
     };
 
     private Supplier<TreeMap<Integer,List<String>>> reverseOrderMapFactory = () -> new TreeMap<Integer,List<String>>(Comparator.reverseOrder());
@@ -92,5 +98,15 @@ public class ShakespeareTest
         histogram.put((int)'a',3L);
         histogram.put((int)'l',2L);
         assertEquals(histogram, letterCountHistogramFor("tralala"));
+    }
+
+    @Test public void test_cannot_write()
+    {
+        assertFalse(canWrite("whizzing"));
+    }
+
+    @Test public void test_can_write()
+    {
+        assertTrue(canWrite("antidisestablishmenterianism"));
     }
 }
