@@ -69,7 +69,20 @@ public class ShakespeareTest
             .collect(intoMapFromLetterToNumberOfOccurrences);
     }
 
-    private int intFor(Character ch){ return ch - 'a'; }
+    private Predicate<Map.Entry<Integer, Long>> letterCountIsLegal = keyValuePair ->
+    {
+        Integer letter = keyValuePair.getKey();
+        Long occurrencesOfLetter = keyValuePair.getValue();
+        return occurrencesOfLetter <= scrabbleAvailableLetters[letter - 'a'];
+    };
+
+    private boolean canWrite(String word)
+    {
+        return letterCountHistogramFor(word)
+                .entrySet()
+                .stream()
+                .allMatch(letterCountIsLegal);
+    }
 
     @Test public void test_letterScore_a() { assertEquals(1, letterScore.applyAsInt('a')); }
 
