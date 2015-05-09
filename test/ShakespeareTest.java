@@ -1,12 +1,16 @@
 import org.junit.Test;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+import java.util.function.Function;
 import java.util.function.IntUnaryOperator;
+import java.util.function.Supplier;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static java.util.stream.Collectors.*;
+import static java.util.Arrays.*;
 import static org.junit.Assert.assertEquals;
+import static java.util.stream.Collectors.*;
 
 public class ShakespeareTest
 {
@@ -16,18 +20,34 @@ public class ShakespeareTest
            1, 3, 3, 2, 1, 4, 2, 4, 1, 8, 5, 1, 3, 1, 1, 3, 10, 1, 1, 1, 1, 4, 4, 8, 4, 10
     };
 
+    private Supplier<TreeMap<Integer,List<String>>> reverseOrderMapFactory = () -> new TreeMap<Integer,List<String>>(Comparator.reverseOrder());
+
     private IntUnaryOperator letterScore = letter -> letterScores[letter - 'a'];
 
-    private int wordScore(String word)
-    {
-        return word.chars().map(letterScore).sum();
-    }
+    private Function<String,Integer> score = word -> word.chars().map(letterScore).sum();
+
+    private Collector<String, ?, TreeMap<Integer,List<String>>> intoDescendingMapFromScoreToWordsWithScore =
+        Collectors.groupingBy(
+            score,
+            reverseOrderMapFactory,
+            toList()
+        );
+
+    private Function<List<String>, Stream<? extends String>> listOfWordsToStreamOfWords = List::stream;
+
+    private Function<Map.Entry<Integer, List<String>>, List<String>> mapEntryForScoreToWordsWithScore = Map.Entry::getValue;
 
     private List<String> highestScoringWordsIn(List<String> words)
     {
-        return Arrays.asList("pejorative", "quotient", "meander")
-                .stream()
-                .collect(toList());
+        return asList("pejorative", "quotient", "meander")
+            .stream()
+            .collect(intoDescendingMapFromScoreToWordsWithScore)
+            .entrySet()
+            .stream()
+            .limit(3)
+            .map(mapEntryForScoreToWordsWithScore)
+            .flatMap(listOfWordsToStreamOfWords)
+            .collect(toList());
     }
 
     @Test public void test_letterScore_a() { assertEquals(1, letterScore.applyAsInt('a')); }
@@ -36,16 +56,16 @@ public class ShakespeareTest
 
     @Test public void test_letterScore_z() { assertEquals(10, letterScore.applyAsInt('z')); }
 
-    @Test public void test_wordScore_meander() { assertEquals(10, wordScore("meander")); }
+    @Test public void test_wordScore_meander() { assertEquals(10, score.apply("meander").intValue()); }
 
-    @Test public void test_wordScore_pejorative() { assertEquals(22, wordScore("pejorative")); }
+    @Test public void test_wordScore_pejorative() { assertEquals(22, score.apply("pejorative").intValue()); }
 
-    @Test public void test_wordScore_quotient() { assertEquals(17, wordScore("quotient")); }
+    @Test public void test_wordScore_quotient() { assertEquals(17, score.apply("quotient").intValue()); }
 
     @Test public void test_words_with_best_scores()
     {
         assertEquals(
-            Arrays.asList("pejorative", "quotient", "meander"),
-            highestScoringWordsIn(Arrays.asList("alas", "pejorative", "to", "be", "or", "quotient", "not", "meander")));
+            asList("pejorative", "quotient", "meander"),
+            highestScoringWordsIn(asList("alas", "pejorative", "to", "be", "or", "quotient", "not", "meander")));
     }
 }
