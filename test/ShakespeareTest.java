@@ -68,4 +68,10 @@ public class ShakespeareTest
             asList("pejorative", "quotient", "meander"),
             highestScoringWordsIn(asList("alas", "pejorative", "to", "be", "or", "quotient", "not", "meander")));
     }
+
+    @Test public void test_histogram_of_letter_count_in_word()
+    {
+        Map histogram = new HashMap<Character,Integer>(){{ put('t',1); put('r',1); put('a',3); put('l',2); }};
+        assertEquals(histogram, letterCountHistogramFor("tralala"));
+    }
 }
