@@ -9,8 +9,8 @@ import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static java.util.Arrays.*;
-import static java.util.function.Function.*;
+import static java.util.Arrays.asList;
+import static java.util.function.Function.identity;
 import static java.util.stream.Collectors.*;
 import static org.junit.Assert.*;
 
@@ -28,9 +28,11 @@ public class ShakespeareTest
            9, 2, 2, 1, 12, 2, 3, 2, 9, 1, 1, 4, 2, 6, 8, 2, 1, 6, 4, 6, 4, 2, 2, 1, 2, 1
     };
 
+    private int alphabeticIndexOf(Integer character) { return character - 'a'; }
+
     private Supplier<TreeMap<Integer,List<String>>> reverseOrderMapFactory = () -> new TreeMap<Integer,List<String>>(Comparator.reverseOrder());
 
-    private IntUnaryOperator letterScore = letter -> letterScores[letter - 'a'];
+    private IntUnaryOperator letterScore = letter -> letterScores[alphabeticIndexOf(letter)];
 
     private Function<String,Integer> score = word -> word.chars().map(letterScore).sum();
 
@@ -73,7 +75,7 @@ public class ShakespeareTest
     {
         Integer letter = keyValuePair.getKey();
         Long occurrencesOfLetter = keyValuePair.getValue();
-        return occurrencesOfLetter <= scrabbleAvailableLetters[letter - 'a'];
+        return occurrencesOfLetter <= scrabbleAvailableLetters[alphabeticIndexOf(letter)];
     };
 
     private boolean canWrite(String word)
